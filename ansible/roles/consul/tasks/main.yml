@@ -1,0 +1,20 @@
+- name: Download consul
+  get_url:
+    url: "{{consul_url}}"
+    dest: "{{consul_archive}}"
+
+- name: Install unzip
+  package: name=unzip
+
+- name: Unzip archive
+  become: yes
+  become_user: root
+  unarchive:
+    src: "{{consul_archive}}"
+    dest: /bin/
+    remote_src: true
+
+- file:
+    path: /var/run/consul
+    state: directory
+    mode: 0700
