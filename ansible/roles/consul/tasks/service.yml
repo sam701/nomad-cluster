@@ -1,0 +1,28 @@
+- name: Create data directory
+  file:
+    path: /var/run/consul
+    state: directory
+    mode: 0700
+
+- name: Create config directory
+  file:
+    path: /etc/consul.d
+    state: directory
+    mode: 0755
+
+- name: Create system.d service template
+  template:
+    src: consul.service
+    dest: /etc/systemd/system/
+
+- name: Copy server config
+  template:
+    src: server.json
+    dest: /etc/consul.d/
+
+- name: Create service
+  systemd:
+    name: consul
+    enabled: true
+    daemon_reload: true
+    state: restarted
