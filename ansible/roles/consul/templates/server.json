@@ -4,8 +4,5 @@
   "log_level": "INFO",
   "node_name": "master",
   "server": true,
-  "bootstrap_expect": 1,
-  "recursors": [
-    "10.0.2.3"
-  ]
+  "bootstrap_expect": 1
 }
