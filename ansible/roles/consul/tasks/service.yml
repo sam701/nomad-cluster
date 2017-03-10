@@ -17,7 +17,19 @@
 
 - name: Copy server config
   template:
+    src: config.json
+    dest: /etc/consul.d/
+
+- name: Enable server
+  when: is_consul_master
+  template:
     src: server.json
+    dest: /etc/consul.d/
+
+- name: Join cluster
+  when: not is_consul_master
+  template:
+    src: client.json
     dest: /etc/consul.d/
 
 - name: Create service
