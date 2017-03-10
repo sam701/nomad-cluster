@@ -3,6 +3,4 @@
   become_user: root
   roles:
     - consul
-  tasks:
-    - name: test
-      shell: echo hello world
+    - nomad

@@ -1,0 +1,11 @@
+- name: Create data directory
+  file:
+    path: "{{nomad_data_dir}}"
+    state: directory
+    mode: 0700
+
+- name: Copy server config
+  template:
+    src: nomad.hcl
+    dest: /etc/
+

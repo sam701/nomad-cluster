@@ -1,14 +1,35 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
+
+def get_node_ip(i)
+  "192.168.100.#{i}"
+end
+
 Vagrant.configure("2") do |config|
   config.vm.box = "centos/7"
+
 
   config.vm.provider "virtualbox" do |vb|
     vb.memory = "512"
   end
 
-  config.vm.provision "ansible" do |ansible|
-    ansible.playbook = "../ansible/main.yml"
+  master_offset = 10
+  number_of_nodes = 1
+  (0...number_of_nodes).each do |i|
+    config.vm.define "node#{i}" do |node|
+
+      node_ip = get_node_ip(i + master_offset)
+      node.vm.network "private_network", ip: node_ip
+
+      config.vm.provision "ansible" do |ansible|
+        ansible.playbook = "../ansible/main.yml"
+        ansible.extra_vars = {
+          node_ip: node_ip,
+          is_consul_master: i == 0,
+          join_consul_cluster_ip: get_node_ip(master_offset),
+        }
+      end    
+    end
   end
 end

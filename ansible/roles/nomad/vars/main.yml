@@ -1,0 +1,4 @@
+nomad_version: 0.5.4
+nomad_download_url: https://releases.hashicorp.com/nomad/{{nomad_version}}/nomad_{{nomad_version}}_linux_amd64.zip
+nomad_archive: /tmp/nomad.zip
+nomad_data_dir: /var/run/nomad
