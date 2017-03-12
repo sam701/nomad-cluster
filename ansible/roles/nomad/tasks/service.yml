@@ -4,8 +4,37 @@
     state: directory
     mode: 0700
 
-- name: Copy server config
-  template:
-    src: nomad.hcl
-    dest: /etc/
+- name: Create config directory
+  file:
+    path: /etc/nomad.d
+    state: directory
+    mode: 0700
 
+- name: Copy base config
+  template:
+    src: base.hcl
+    dest: /etc/nomad.d/
+
+- name: Copy server config
+  when: is_consul_master
+  template:
+    src: server.hcl
+    dest: /etc/nomad.d/
+
+- name: Copy client config
+  when: not is_consul_master
+  template:
+    src: client.hcl
+    dest: /etc/nomad.d/
+
+- name: Create system.d service template
+  template:
+    src: nomad.service
+    dest: /etc/systemd/system/
+
+- name: Create service
+  systemd:
+    name: nomad
+    enabled: true
+    daemon_reload: true
+    state: started
