@@ -1,0 +1,7 @@
+- name: Set hostname
+  hostname: name={{node_name}}
+
+- name: Insert hostname into hosts file
+  lineinfile:
+    dest: /etc/hosts
+    line: "{{node_ip}} {{node_name}}"
