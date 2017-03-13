@@ -18,9 +18,15 @@ Vagrant.configure("2") do |config|
   master_offset = 10
   (0...number_of_nodes).each do |i|
     config.vm.define "node#{i}" do |node|
-
+      is_master = i == 0
       node_ip = get_node_ip(i + master_offset)
+
       node.vm.network "private_network", ip: node_ip
+
+      # forward nomad HTTP port
+      if is_master
+        node.vm.network "forwarded_port", guest: 4646, host: 4646
+      end
 
       config.vm.provision "ansible" do |ansible|
         ansible.playbook = "../ansible/main.yml"
@@ -28,7 +34,7 @@ Vagrant.configure("2") do |config|
           vagrant: true,
           node_ip: node_ip,
           node_name: "node#{i}",
-          is_consul_master: i == 0,
+          is_consul_master: is_master,
           join_consul_cluster_ip: get_node_ip(master_offset),
         }
       end    
