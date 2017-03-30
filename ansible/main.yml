@@ -6,3 +6,13 @@
       when: vagrant
     - consul
     - nomad
+
+  tasks:
+    - name: Install docker
+      package: name=docker
+    - name: Start docker
+      systemd:
+        name: docker
+        enabled: true
+        state: started
+    
