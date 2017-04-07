@@ -1,18 +1,12 @@
 - name: Install Dnsmasq
   package: name=dnsmasq
 
-- name: Enable NetworkManager DNS plugin with dnsmasq
-  lineinfile:
-    dest: /etc/NetworkManager/NetworkManager.conf
-    insertafter: '^\[main\]'
-    line: dns=dnsmasq
-
-- name: Copy dnsmasq config to NetworkManager config dir
+- name: Copy dnsmasq config
   template:
     src: dnsmasq.conf
-    dest: /etc/NetworkManager/dnsmasq.d/10-consul
+    dest: /etc/dnsmasq.d/consul
 
-- name: Restart NetworkManager service
+- name: Restart dnsmasq service
   systemd:
-    name: NetworkManager
+    name: dnsmasq
     state: restarted
