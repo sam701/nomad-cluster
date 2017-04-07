@@ -37,4 +37,4 @@
     name: nomad
     enabled: true
     daemon_reload: true
-    state: started
+    state: restarted
