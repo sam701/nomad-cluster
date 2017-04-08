@@ -1,4 +1,4 @@
-job "kvServer" {
+job "kvServerJob" {
   type = "service"
 
   datacenters = ["Vagrant-a"]
@@ -6,7 +6,7 @@ job "kvServer" {
   group "group1" {
     count = 1
 
-    task "runIt" {
+    task "group1" {
       driver = "docker"
 
       config {
@@ -17,11 +17,15 @@ job "kvServer" {
         }
       }
 
+      constraint {
+        attribute = "${node.unique.name}"
+        value     = "node1"
+      }
+
       service {
-        name = "kvserver"
+        name = "kv-server"
         port = "http"
         tags = ["tag1"]
-
       }
 
       resources {
