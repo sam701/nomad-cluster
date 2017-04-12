@@ -3,5 +3,6 @@
   "data_dir": "/var/run/consul",
   "log_level": "INFO",
   "node_name": "{{node_name}}",
-  "bind_addr": "{{node_ip}}"
+  "bind_addr": "{{node_ip}}",
+  "client_addr": "{{consul_client_ip}}"
 }

@@ -1,1 +1,2 @@
 consul_version: 0.7.5
+consul_client_ip: 169.254.1.1

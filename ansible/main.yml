@@ -2,6 +2,10 @@
   become: yes
   become_user: root
   
+  vars:
+    consul_client_ip: 169.254.0.30
+    cluster_network_interface: enp0s8
+
   roles:
     - initial
     - role: vagrant
