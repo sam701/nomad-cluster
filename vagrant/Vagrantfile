@@ -7,6 +7,9 @@ def get_node_ip(i)
   "192.168.100.#{i}"
 end
 
+consul_client_ip = "169.254.0.40"
+master_offset = 10
+
 Vagrant.configure("2") do |config|
   config.vm.box = "ubuntu/xenial64"
 
@@ -15,7 +18,6 @@ Vagrant.configure("2") do |config|
     vb.memory = "512"
   end
 
-  master_offset = 10
   (0...number_of_nodes).each do |i|
     config.vm.define "node#{i}" do |node|
       is_master = i == 0
@@ -23,13 +25,16 @@ Vagrant.configure("2") do |config|
 
       node.vm.network "private_network", ip: node_ip
 
-      # forward nomad HTTP port
       if is_master
+        # forward nomad HTTP port
         node.vm.network "forwarded_port", guest: 4646, host: 4646
+
+        # forward consul UI port
+        node.vm.network "forwarded_port", guest: 8500, guest_ip: consul_client_ip, host: 8500
       end
 
-      config.vm.provision "shell", inline: "test -e /usr/bin/python || (apt -y update && apt install -y python-minimal)"
-      config.vm.provision "ansible" do |ansible|
+      node.vm.provision "shell", inline: "test -e /usr/bin/python || (apt -y update && apt install -y python-minimal)"
+      node.vm.provision "ansible" do |ansible|
         ansible.playbook = "../ansible/main.yml"
         ansible.extra_vars = {
           vagrant: true,
@@ -37,6 +42,7 @@ Vagrant.configure("2") do |config|
           node_name: "node#{i}",
           is_consul_master: is_master,
           join_consul_cluster_ip: get_node_ip(master_offset),
+          consul_client_ip: consul_client_ip,
         }
       end    
     end
