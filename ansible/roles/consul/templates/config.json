@@ -1,6 +1,6 @@
 {
   "datacenter": "vagrant-a",
-  "data_dir": "/var/run/consul",
+  "data_dir": "{{consul_data_dir}}",
   "log_level": "INFO",
   "node_name": "{{node_name}}",
   "bind_addr": "{{node_ip}}",
