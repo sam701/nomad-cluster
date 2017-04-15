@@ -1,6 +1,6 @@
 - name: Create data directory
   file:
-    path: /var/run/consul
+    path: "{{consul_data_dir}}"
     state: directory
     mode: 0700
 
@@ -15,18 +15,18 @@
     src: consul.service
     dest: /etc/systemd/system/
 
-- name: Copy server config
+- name: Copy basic nomad config
   template:
     src: config.json
     dest: /etc/consul.d/
 
-- name: Enable server
+- name: Copy server config
   when: is_consul_master
   template:
     src: server.json
     dest: /etc/consul.d/
 
-- name: Join cluster
+- name: Copy client config
   when: not is_consul_master
   template:
     src: client.json
