@@ -25,6 +25,7 @@ job "kvClientJob" {
 
       env {
         KV_SERVICE = "kv-server"
+        CONSUL_ADDR = "168.254.0.40:8500"
       }
 
       resources {
