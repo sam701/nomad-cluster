@@ -12,6 +12,12 @@ job "kvServerJob" {
       config {
         image = "sam701/kv-server:latest"
 
+        command = "kv-server"
+        args = [
+          "--host-port",
+          ":${NOMAD_PORT_grpc}"
+        ]
+
         labels {
           storage = "awesome"
         }
@@ -24,16 +30,16 @@ job "kvServerJob" {
 
       service {
         name = "kv-server"
-        port = "http"
+        port = "grpc"
         tags = ["tag1"]
       }
 
       resources {
-        memory = 30
+        memory = 100
 
         network {
           mbits = 1
-          port "http" {}
+          port "grpc" {}
         }
       }
 

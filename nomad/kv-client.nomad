@@ -12,6 +12,13 @@ job "kvClientJob" {
       config {
         image = "sam701/kv-client:latest"
 
+        command = "kv-client"
+        args = [
+          "--consul", "169.254.0.40:8500",
+          "--kv-service", "kv-server",
+          "--listen", ":${NOMAD_PORT_http}"
+        ]
+
         labels {
           client = "fast"
         }
@@ -21,11 +28,6 @@ job "kvClientJob" {
         name = "kv-client"
         port = "http"
         tags = ["client"]
-      }
-
-      env {
-        KV_SERVICE = "kv-server"
-        CONSUL_ADDR = "168.254.0.40:8500"
       }
 
       resources {
