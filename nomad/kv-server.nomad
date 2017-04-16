@@ -18,6 +18,10 @@ job "kvServerJob" {
           ":${NOMAD_PORT_grpc}"
         ]
 
+        volumes = [
+          "/var/lib/kv-server:/var/lib/kv-server"
+        ]
+
         labels {
           storage = "awesome"
         }
