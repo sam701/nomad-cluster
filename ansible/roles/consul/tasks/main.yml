@@ -1,4 +1,3 @@
-- include: client_ip.yml
 - include: download.yml
 - include: service.yml
 - include: dns.yml

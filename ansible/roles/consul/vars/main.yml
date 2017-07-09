@@ -1,3 +1,4 @@
 consul_url: "https://releases.hashicorp.com/consul/{{consul_version}}/consul_{{consul_version}}_linux_amd64.zip"
 consul_archive: /tmp/consul.zip
 consul_data_dir: /var/lib/consul
+consul_client_ip: 172.17.0.1
